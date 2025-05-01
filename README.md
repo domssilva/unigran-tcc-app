@@ -5,11 +5,10 @@ project description TBD
 ## 🛠 Setup Environment Variables
 
 1. **Create a `.env` file** in the project root (same folder as `app.py`):  
-   ```bash
-   touch .env  # Linux/Mac
-   # OR
-   type nul > .env  # Windows
-   ```
+```bash
+touch /app/.env  # Linux/Mac
+type nul > \app\.env  # Windows
+```
 
  .env example:
  ```
@@ -24,4 +23,8 @@ Ensure that .env is in the `.gitignore` file!
 2. Installing dependencies
 pip install -r requirements.txt
 
-
+## Running Project
+```bash
+cd /app
+python main.py
+```
