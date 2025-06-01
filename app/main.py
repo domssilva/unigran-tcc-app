@@ -59,8 +59,8 @@ def logout():
     logout_user()
     return redirect(url_for('login_page'))
 
-# /api
 app.register_blueprint(auth_bp)
+app.register_blueprint(protected_bp)
 
 if __name__ == '__main__':
     app.run(debug=os.getenv('DEBUG', DEBUG), port=5001)
