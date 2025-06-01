@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 # from flask_sqlalchemy import SQLAlchemy
 # from flask_migrate import Migrate
 import os
@@ -17,7 +17,7 @@ DEBUG = os.getenv('DEBUG')
 # Routes
 @app.route('/')
 def home():
-    return "Hello Flask"
+    return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=os.getenv('DEBUG', DEBUG))
+    app.run(debug=os.getenv('DEBUG', DEBUG), port=5001)
