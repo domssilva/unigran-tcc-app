@@ -23,3 +23,20 @@ def register_user():
     db.session.commit()
 
     return jsonify({'message': 'User registered successfully'}), 201
+
+
+@auth_bp.route('/login', methods=['POST'])
+def login_user():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+
+    if not all([email, password]):
+        return jsonify({'error': 'Missing credentials'}), 400
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user or not user.check_password(password):
+        return jsonify({'error': 'Invalid email or password'}), 401
+
+    return jsonify({'message': 'Login successful', 'user': {'id': user.id, 'name': user.name, 'email': user.email}}), 200
