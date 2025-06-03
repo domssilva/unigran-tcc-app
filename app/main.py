@@ -1,10 +1,10 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_migrate import Migrate
-import os
+from flask_login import LoginManager, login_user, logout_user, current_user
 from dotenv import load_dotenv
 from models import db
 from routes import auth_bp, protected_bp
-from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 
 # Load environment variables
 load_dotenv()

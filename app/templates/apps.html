@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Minhas Aplicações{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Minhas Aplicações</h2>
+
+    {% if apps %}
+        <ul class="list-group">
+        {% for app in apps %}
+            <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-light">
+                <div>
+                    <strong>{{ app.name }}</strong> — v{{ app.version or 'N/A' }}
+                </div>
+                <span class="badge bg-info">{{ app.vulnerabilities_count }} vulnerabilidades</span>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nenhuma aplicação cadastrada ainda.</p>
+    {% endif %}
+</div>
+{% endblock %}
