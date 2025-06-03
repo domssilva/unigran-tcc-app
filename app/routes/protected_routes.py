@@ -13,11 +13,7 @@ def dashboard():
 @protected_bp.route('/me')
 @login_required
 def me():
-    return jsonify({
-        'id': current_user.id,
-        'name': current_user.name,
-        'email': current_user.email
-    })
+    return render_template('profile.html')
 
 @protected_bp.route('/apps', methods=['GET'])
 @login_required

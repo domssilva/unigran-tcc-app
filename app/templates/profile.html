@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Meu Perfil{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow p-4" style="background-color: #1f1f2e; color: white;">
+        <h3 class="mb-3">Meu Perfil</h3>
+        <p><strong>User ID:</strong> {{ current_user.id }}</p>
+        <p><strong>Nome:</strong> {{ current_user.name }}</p>
+        <p><strong>E-mail:</strong> {{ current_user.email }}</p>
+    </div>
+</div>
+{% endblock %}
