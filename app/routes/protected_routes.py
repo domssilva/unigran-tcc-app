@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, render_template, request, redirect, url_for
 from flask_login import login_required, current_user
 from models.application import Application
+from models.vulnerability import Vulnerability
 from services.application_service import create_application
 
 protected_bp = Blueprint('protected', __name__)
@@ -35,3 +36,10 @@ def register_application():
         return redirect(url_for('protected.apps'))
 
     return render_template('apps_register.html')
+
+@protected_bp.route('/app/<int:id>', methods=['GET'])
+@login_required
+def app_detail(id):
+    app = Application.query.filter_by(id=id, user_id=current_user.id).first_or_404()
+    vulnerabilities = Vulnerability.query.filter_by(application_id=app.id).all()
+    return render_template('app_detail.html', app=app, vulnerabilities=vulnerabilities)

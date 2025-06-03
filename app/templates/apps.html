@@ -10,18 +10,20 @@
     </div>
 
     {% if apps %}
-        <ul class="list-group">
+    <ul class="list-group">
         {% for app in apps %}
-            <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-light">
-                <div>
-                    <strong>{{ app.name }}</strong> — v{{ app.version or 'N/A' }}
-                </div>
-                <span class="badge bg-info">{{ app.vulnerabilities_count }} vulnerabilidades</span>
-            </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-light">
+            <div>
+                <strong>{{ app.name }}</strong> — v{{ app.version or 'N/A' }}
+                <br><small class="text-muted">{{ app.vulnerabilities_count }} vulnerabilidades</small>
+            </div>
+            <a href="{{ url_for('protected.app_detail', id=app.id) }}" class="btn btn-outline-light btn-sm">Ver
+                detalhes</a>
+        </li>
         {% endfor %}
-        </ul>
+    </ul>
     {% else %}
-        <p>Nenhuma aplicação cadastrada ainda.</p>
+    <p>Nenhuma aplicação cadastrada ainda.</p>
     {% endif %}
 </div>
 {% endblock %}

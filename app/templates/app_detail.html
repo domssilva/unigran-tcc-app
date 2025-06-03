@@ -3,51 +3,34 @@
 {% block title %}{{ app.name }}{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2>{{ app.name }} <small class="text-muted">v{{ app.version }}</small></h2>
-    <p>Total de vulnerabilidades: {{ app.vulnerabilities_count }}</p>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">{{ app.name }}</h2>
+        <a href="#" class="btn btn-light btn-sm">
+            + Nova Vulnerabilidade
+        </a>
+    </div>
+    <p class="text-muted">Versão: {{ app.version or 'N/A' }}</p>
 
-    <hr>
+    <hr class="bg-secondary">
 
-    <h4>Registrar nova vulnerabilidade</h4>
-    <form method="POST" class="mb-4">
-        <div class="mb-3">
-            <label for="description" class="form-label">Descrição</label>
-            <textarea class="form-control" name="description" required></textarea>
-        </div>
-        <div class="mb-3">
-            <label for="severity" class="form-label">Severidade</label>
-            <select class="form-select" name="severity" required>
-                <option value="baixa">Baixa</option>
-                <option value="média">Média</option>
-                <option value="alta">Alta</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="status" class="form-label">Status</label>
-            <select class="form-select" name="status">
-                <option value="aberto">Aberto</option>
-                <option value="em análise">Em análise</option>
-                <option value="resolvido">Resolvido</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Registrar</button>
-    </form>
+    <h5 class="mb-3">Vulnerabilidades</h5>
 
-    <h4>Vulnerabilidades</h4>
     {% if vulnerabilities %}
         <ul class="list-group">
         {% for v in vulnerabilities %}
-            <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-light">
-                <div>
-                    <strong>{{ v.severity|capitalize }}</strong> – {{ v.description }}
-                    <br><small>Status: {{ v.status }} | Descoberta em {{ v.date_discovered }}</small>
-                </div>
+            <li class="list-group-item bg-dark text-light border-secondary">
+                <strong>{{ v.severity|capitalize }}</strong> – {{ v.description }}<br>
+                <small class="text-muted">Status: {{ v.status }} | Descoberta em {{ v.date_discovered }}</small>
             </li>
         {% endfor %}
         </ul>
     {% else %}
-        <p>Sem vulnerabilidades registradas.</p>
+        <p class="text-muted">Nenhuma vulnerabilidade registrada para esta aplicação.</p>
     {% endif %}
+
+    <div class="mt-4">
+        <a href="{{ url_for('protected.apps') }}" class="btn btn-outline-light btn-sm">← Voltar para Aplicações</a>
+    </div>
 </div>
 {% endblock %}
