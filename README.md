@@ -28,3 +28,33 @@ pip install -r requirements.txt
 cd /app
 python main.py
 ```
+
+## DB 
+
+Limpando o banco de dados:
+1. `rm instance/app.db`
+1. `rm -rf migrations/`
+
+
+Iniciar banco de dados:
+1. criar db:
+`flask --app main:app db init`
+
+2. gerar as migrações com todos os models:
+`flask --app main:app db migrate -m "init schema"`
+
+3. aplicar a migração
+`flask --app main:app db upgrade`
+
+---
+
+# Doc API
+
+Registrando usuario
+
+```bash
+curl -X POST localhost:5001/api/register -H "Content-Type: application/json" --data '{"name": "fulano", "email": "fulano@gmail.com", "password":"123456"}'
+```
+
+# Rodando Testes
+`pytest tests/`
