@@ -1,8 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}Início - VulnManager{% endblock %}
+{% block title %}Início{% endblock %}
 
 {% block content %}
-    <h1>Bem-vindo ao VulnManager</h1>
-    <p>Este sistema ajuda você a registrar, priorizar e visualizar vulnerabilidades de forma eficiente.</p>
+<div class="container mt-5">
+    <h1 class="mb-4">Bem-vindo ao VulnManager</h1>
+
+    <p class="lead text-light mb-4" style="max-width: 700px;">
+        O <strong>VulnManager</strong> é um sistema web criado para auxiliar no processo de registro, organização e visualização de vulnerabilidades em aplicações.
+        Ideal para equipes de segurança e desenvolvedores, ele permite gerenciar riscos de forma prática e eficiente.
+    </p>
+
+    <ul class="list-unstyled text-light">
+        <li>✅ Cadastre e visualize aplicações</li>
+        <li>✅ Registre vulnerabilidades com severidade e status</li>
+        <li>✅ Veja um resumo geral no seu dashboard</li>
+        <li>✅ Experiência escura, moderna e responsiva</li>
+    </ul>
+</div>
 {% endblock %}
