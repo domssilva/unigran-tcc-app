@@ -17,16 +17,23 @@
     <h5 class="mb-3">Vulnerabilidades</h5>
 
     {% if vulnerabilities %}
-        <ul class="list-group">
+    <ul class="list-group">
         {% for v in vulnerabilities %}
-            <li class="list-group-item bg-dark text-light border-secondary">
-                <strong>{{ v.severity|capitalize }}</strong> – {{ v.description }}<br>
-                <small class="text-muted">Status: {{ v.status }} | Descoberta em {{ v.date_discovered }}</small>
-            </li>
+        <li class="list-group-item bg-dark text-light border-secondary">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ v.severity|capitalize }}</strong> – {{ v.description }}<br>
+                    <small class="text-muted">Status: {{ v.status }} | Descoberta em {{ v.date_discovered }}</small>
+                </div>
+                <a href="{{ url_for('protected.edit_vulnerability', app_id=app.id, vuln_id=v.id) }}"
+                    class="btn btn-outline-light btn-sm ms-3">Editar</a>
+            </div>
+
+        </li>
         {% endfor %}
-        </ul>
+    </ul>
     {% else %}
-        <p class="text-muted">Nenhuma vulnerabilidade registrada para esta aplicação.</p>
+    <p class="text-muted">Nenhuma vulnerabilidade registrada para esta aplicação.</p>
     {% endif %}
 
     <div class="mt-4">
