@@ -8,7 +8,11 @@ protected_bp = Blueprint('protected', __name__)
 @protected_bp.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', user=current_user)
+    user_id = current_user.id
+    apps = Application.query.filter_by(user_id=user_id).all()
+    total_apps = len(apps)
+    total_vulns = sum(app.vulnerabilities_count for app in apps)
+    return render_template('dashboard.html', total_apps=total_apps, total_vulns=total_vulns)
 
 @protected_bp.route('/me')
 @login_required
