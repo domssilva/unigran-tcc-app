@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from models.application import Application
 from models.vulnerability import Vulnerability
 from services.application_service import create_application
+from services.vulnerability_service import create_vulnerability
 
 protected_bp = Blueprint('protected', __name__)
 
@@ -43,3 +44,19 @@ def app_detail(id):
     app = Application.query.filter_by(id=id, user_id=current_user.id).first_or_404()
     vulnerabilities = Vulnerability.query.filter_by(application_id=app.id).all()
     return render_template('app_detail.html', app=app, vulnerabilities=vulnerabilities)
+
+@protected_bp.route('/app/<int:app_id>/vulns/new', methods=['GET', 'POST'])
+@login_required
+def register_vulnerability(app_id):
+    app = Application.query.filter_by(id=app_id, user_id=current_user.id).first_or_404()
+
+    if request.method == 'POST':
+        description = request.form['description']
+        severity = request.form.get('severity', 'média')
+        status = request.form.get('status', 'aberto')
+
+        create_vulnerability(description, severity, status, app)
+
+        return redirect(url_for('protected.app_detail', id=app.id))
+
+    return render_template('vulnerability_register.html', app=app)
