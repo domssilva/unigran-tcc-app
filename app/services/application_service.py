@@ -6,3 +6,9 @@ def create_application(name, version, user_id):
     db.session.add(app)
     db.session.commit()
     return app
+
+def update_application(app, name, version):
+    app.name = name
+    app.version = version
+    db.session.commit()
+    return app

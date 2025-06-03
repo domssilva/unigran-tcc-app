@@ -6,6 +6,9 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="mb-0">{{ app.name }}</h2>
+         <a href="{{ url_for('protected.edit_application', id=app.id) }}" class="btn btn-outline-light btn-sm">
+            Editar Aplicação
+        </a>
         <a href="{{ url_for('protected.register_vulnerability', app_id=app.id) }}" class="btn btn-light btn-sm">
             + Nova Vulnerabilidade
         </a>

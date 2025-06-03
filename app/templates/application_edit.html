@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Aplicação{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Editar Aplicação</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="name" class="form-label">Nome da Aplicação</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ app.name }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="version" class="form-label">Versão</label>
+            <input type="text" class="form-control" id="version" name="version" value="{{ app.version or '' }}">
+        </div>
+        <button type="submit" class="btn btn-light">Salvar</button>
+        <a href="{{ url_for('protected.app_detail', id=app.id) }}" class="btn btn-outline-light ms-2">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
