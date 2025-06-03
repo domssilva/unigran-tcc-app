@@ -66,6 +66,10 @@ def logout():
     elif request.method == 'POST':
         logout_user()
         return redirect(url_for('login_page'))
+    
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(protected_bp)
