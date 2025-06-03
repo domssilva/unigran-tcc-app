@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastro{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4 text-center">Cadastro de Usuário</h2>
+
+    <div id="alert-container"></div>
+
+    <form id="register-form" class="w-50 mx-auto">
+        <div class="mb-3">
+            <label for="name" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="name" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">E-mail</label>
+            <input type="email" class="form-control" id="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Senha</label>
+            <input type="password" class="form-control" id="password" required>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.getElementById('register-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password })
+    });
+
+    const alertContainer = document.getElementById('alert-container');
+    alertContainer.innerHTML = '';
+
+    if (response.ok) {
+        alertContainer.innerHTML = `<div class="alert alert-success">Usuário cadastrado com sucesso!</div>`;
+        document.getElementById('register-form').reset();
+    } else {
+        const result = await response.json();
+        const message = result.error || 'Erro ao cadastrar';
+        alertContainer.innerHTML = `<div class="alert alert-danger">${message}</div>`;
+    }
+});
+</script>
+{% endblock %}
