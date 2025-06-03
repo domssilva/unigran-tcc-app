@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from models.user import User
-from models import db
+from services.user_service import create_user
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/api')
 
@@ -11,17 +11,14 @@ def register_user():
     email = data.get('email')
     password = data.get('password')
 
-    if not all([name, email, password]):
-        return jsonify({'error': 'Missing data'}), 400
+    user, error = create_user(name, email, password)
 
-    if User.query.filter_by(email=email).first():
-        return jsonify({'error': 'User already exists'}), 409
+    if error == "Missing required fields":
+        return jsonify({'error': error}), 400
+    if error == "User already exists":
+        return jsonify({'error': error}), 409
 
-    user = User(name=name, email=email)
-    user.set_password(password)
-    db.session.add(user)
-    db.session.commit()
-
+    login_user(user)  # login automático se desejar
     return jsonify({'message': 'User registered successfully'}), 201
 
 
