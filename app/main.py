@@ -4,8 +4,7 @@ import os
 from dotenv import load_dotenv
 from models import db
 from routes import auth_bp, protected_bp
-from flask_login import LoginManager
-from flask_login import login_required, login_user, logout_user
+from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 
 # Load environment variables
 load_dotenv()
@@ -26,7 +25,7 @@ migrate = Migrate(app, db)
 # gerenciamento de sessao
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'auth.login_user'
+login_manager.login_view = 'login_page'
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -43,6 +42,8 @@ def register_page():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     if request.method == 'GET':
         return render_template('login.html')
     elif request.method == 'POST':
@@ -57,11 +58,14 @@ def login_page():
             flash('Credenciais inválidas', 'danger')
             return render_template('login.html')
 
-@app.route('/logout', methods=['POST'])
-@login_required
+@app.route('/logout', methods=['GET','POST'])
 def logout():
-    logout_user()
-    return redirect(url_for('login_page'))
+    if not current_user.is_authenticated:
+        return redirect(url_for('home'))
+
+    elif request.method == 'POST':
+        logout_user()
+        return redirect(url_for('login_page'))
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(protected_bp)
