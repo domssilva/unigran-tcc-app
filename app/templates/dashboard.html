@@ -54,9 +54,7 @@
         data: {{ vuln_status.values() | list | tojson }},
         backgroundColor: ['#0dcaf0', '#ffc107', '#198754'],
         borderColor: '#111',
-        borderWidth: 1
-  }]
-};
+        borderWidth: 1}]};
 
     const severityData = {
         labels: {{ vuln_severity.keys() | list | tojson }},
@@ -65,8 +63,7 @@
         data: {{ vuln_severity.values() | list | tojson }},
         backgroundColor: ['#0dcaf0', '#0d6efd', '#dc3545', '#6f42c1'],
         borderColor: '#111',
-        borderWidth: 1
-  }]
+        borderWidth: 1}]
 };
 
     new Chart(document.getElementById('statusChart'), {
