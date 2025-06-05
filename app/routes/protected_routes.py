@@ -1,9 +1,10 @@
-from flask import Blueprint, jsonify, render_template, request, redirect, url_for
+from flask import Blueprint, make_response, render_template, request, redirect, url_for
 from flask_login import login_required, current_user
 from models.application import Application
 from models.vulnerability import Vulnerability
 from services.application_service import create_application, update_application
 from services.vulnerability_service import create_vulnerability, update_vulnerability, get_vulnerability_stats
+from services.report_service import generate_csv_for_user
 
 protected_bp = Blueprint('protected', __name__)
 
@@ -102,3 +103,13 @@ def edit_vulnerability(app_id, vuln_id):
         update_vulnerability(vuln, description, severity, status)
         return redirect(url_for('protected.app_detail', id=app.id))
     return render_template('vulnerability_edit.html', app=app, vuln=vuln)
+
+
+@protected_bp.route('/export-all')
+@login_required
+def export_all_vulnerabilities():
+    csv_data = generate_csv_for_user(current_user.id)
+    output = make_response(csv_data)
+    output.headers["Content-Disposition"] = "attachment; filename=relatorio_vulnerabilidades.csv"
+    output.headers["Content-type"] = "text/csv"
+    return output
