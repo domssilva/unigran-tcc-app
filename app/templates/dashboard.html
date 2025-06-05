@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
@@ -31,5 +30,55 @@
             <a href="{{ url_for('protected.me') }}">Ver perfil →</a>
         </div>
     </div>
+
+    <hr class="my-5">
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <h5 class="text-light">Status das Vulnerabilidades</h5>
+            <canvas id="statusChart"></canvas>
+        </div>
+        <div class="col-md-6 mb-4">
+            <h5 class="text-light">Severidade das Vulnerabilidades</h5>
+            <canvas id="severityChart"></canvas>
+        </div>
+    </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const statusData = {
+        labels: {{ vuln_status.keys() | list | tojson }},
+    datasets: [{
+        label: 'Por Status',
+        data: {{ vuln_status.values() | list | tojson }},
+        backgroundColor: ['#0dcaf0', '#ffc107', '#198754'],
+        borderColor: '#111',
+        borderWidth: 1
+  }]
+};
+
+    const severityData = {
+        labels: {{ vuln_severity.keys() | list | tojson }},
+    datasets: [{
+        label: 'Por Severidade',
+        data: {{ vuln_severity.values() | list | tojson }},
+        backgroundColor: ['#0dcaf0', '#0d6efd', '#dc3545', '#6f42c1'],
+        borderColor: '#111',
+        borderWidth: 1
+  }]
+};
+
+    new Chart(document.getElementById('statusChart'), {
+        type: 'bar',
+        data: statusData,
+        options: { plugins: { legend: { display: false } }, responsive: true }
+    });
+
+    new Chart(document.getElementById('severityChart'), {
+        type: 'bar',
+        data: severityData,
+        options: { plugins: { legend: { display: false } }, responsive: true }
+    });
+</script>
 {% endblock %}

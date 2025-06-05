@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from models.application import Application
 from models.vulnerability import Vulnerability
 from services.application_service import create_application, update_application
-from services.vulnerability_service import create_vulnerability, update_vulnerability
+from services.vulnerability_service import create_vulnerability, update_vulnerability, get_vulnerability_stats
 
 protected_bp = Blueprint('protected', __name__)
 
@@ -11,11 +11,18 @@ protected_bp = Blueprint('protected', __name__)
 @protected_bp.route('/dashboard')
 @login_required
 def dashboard():
-    user_id = current_user.id
-    apps = Application.query.filter_by(user_id=user_id).all()
-    total_apps = len(apps)
-    total_vulns = sum(app.vulnerabilities_count for app in apps)
-    return render_template('dashboard.html', total_apps=total_apps, total_vulns=total_vulns)
+    stats = get_vulnerability_stats(current_user.id)
+
+    total_apps = Application.query.filter_by(user_id=current_user.id).count()
+    total_vulns = sum(stats['status'].values())
+
+    return render_template("dashboard.html",
+        current_user=current_user,
+        total_apps=total_apps,
+        total_vulns=total_vulns,
+        vuln_status=stats['status'],
+        vuln_severity=stats['severity']
+    )
 
 
 @protected_bp.route('/me')
