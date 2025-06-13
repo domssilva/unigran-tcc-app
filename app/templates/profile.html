@@ -5,10 +5,24 @@
 {% block content %}
 <div class="container mt-4">
     <div class="card shadow p-4" style="background-color: #1f1f2e; color: white;">
-        <h3 class="mb-3">Meu Perfil</h3>
-        <p><strong>User ID:</strong> {{ current_user.id }}</p>
-        <p><strong>Nome:</strong> {{ current_user.name }}</p>
-        <p><strong>E-mail:</strong> {{ current_user.email }}</p>
+        <div class="row align-items-center">
+
+            <!-- Espaço para foto de perfil -->
+            <div class="col-md-3 text-center mb-3 mb-md-0">
+                <img src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png" class="rounded-circle"
+                    style="width: 120px; height: 120px; object-fit: cover; border: 2px solid #888;"
+                    alt="Foto de Perfil">
+            </div>
+
+            <!-- Informações do usuário -->
+            <div class="col-md-9">
+                <h3 class="mb-3">Meu Perfil</h3>
+                <p><strong>User ID:</strong> {{ current_user.id }}</p>
+                <p><strong>Nome:</strong> {{ current_user.name }}</p>
+                <p><strong>E-mail:</strong> {{ current_user.email }}</p>
+            </div>
+
+        </div>
     </div>
 </div>
 {% endblock %}
