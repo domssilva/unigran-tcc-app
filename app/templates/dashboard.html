@@ -6,9 +6,11 @@
     <h2 class="mb-4 fw-semibold">Resumo da Conta</h2>
 
     <div class="d-flex justify-content-end mb-4">
+        {% if total_vulns > 0 %}
         <a href="{{ url_for('protected.export_all_vulnerabilities') }}" class="btn btn-outline-info btn-sm">
             Exportar todas as vulnerabilidades (.csv)
         </a>
+        {% endif %}
     </div>
 
 
