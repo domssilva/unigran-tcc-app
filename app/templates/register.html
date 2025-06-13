@@ -47,8 +47,10 @@ document.getElementById('register-form').addEventListener('submit', async functi
     alertContainer.innerHTML = '';
 
     if (response.ok) {
-        alertContainer.innerHTML = `<div class="alert alert-success">Usuário cadastrado com sucesso!</div>`;
-        document.getElementById('register-form').reset();
+        alertContainer.innerHTML = `<div class="alert alert-success">Usuário cadastrado com sucesso! Redirecionando...</div>`;
+        setTimeout(() => {
+            window.location.href = '/dashboard';
+        }, 1000);  // 1 segundo para dar tempo de ver a mensagem
     } else {
         const result = await response.json();
         const message = result.error || 'Erro ao cadastrar';

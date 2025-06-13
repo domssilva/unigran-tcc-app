@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flask_login import login_user
 from models.user import User
 from services.user_service import create_user
 
@@ -18,12 +19,12 @@ def register_user():
     if error == "User already exists":
         return jsonify({'error': error}), 409
 
-    login_user(user)  # login automático se desejar
+    login_user(user)
     return jsonify({'message': 'User registered successfully'}), 201
 
 
 @auth_bp.route('/login', methods=['POST'])
-def login_user():
+def login_user_route():
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
@@ -36,4 +37,13 @@ def login_user():
     if not user or not user.check_password(password):
         return jsonify({'error': 'Invalid email or password'}), 401
 
-    return jsonify({'message': 'Login successful', 'user': {'id': user.id, 'name': user.name, 'email': user.email}}), 200
+    login_user(user)
+
+    return jsonify({
+        'message': 'Login successful',
+        'user': {
+            'id': user.id,
+            'name': user.name,
+            'email': user.email
+        }
+    }), 200
