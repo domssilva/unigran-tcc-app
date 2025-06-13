@@ -19,13 +19,13 @@ def seed():
         db.create_all()
 
         # Usuário de teste
-        user = User(name="Usuário de Teste", email="teste@example.com")
+        user = User(name="administrator", email="admin@gmail.com")
         user.set_password("123456")
         db.session.add(user)
         db.session.commit()
 
         # Aplicação de exemplo
-        app_model = Application(name="Sistema de Validação", version="1.0", user_id=user.id)
+        app_model = Application(name="NordVPN Client", version="2.3", user_id=user.id)
         db.session.add(app_model)
         db.session.commit()
 
@@ -77,6 +77,7 @@ def seed():
             )
             db.session.add(vuln)
 
+        app_model.vulnerabilities_count = len(vuln_names)
         db.session.commit()
         print("Banco de dados populado com sucesso com 1 usuário, 1 app e 30 vulnerabilidades.")
 
