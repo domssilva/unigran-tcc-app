@@ -12,3 +12,10 @@ def update_application(app, name, version):
     app.version = version
     db.session.commit()
     return app
+
+def delete_application(app):
+    for vuln in app.vulnerabilities:
+        db.session.delete(vuln)
+
+    db.session.delete(app)
+    db.session.commit()

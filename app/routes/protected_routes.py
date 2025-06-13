@@ -2,7 +2,7 @@ from flask import Blueprint, make_response, render_template, request, redirect, 
 from flask_login import login_required, current_user
 from models.application import Application
 from models.vulnerability import Vulnerability
-from services.application_service import create_application, update_application
+from services.application_service import create_application, update_application, delete_application
 from services.vulnerability_service import create_vulnerability, update_vulnerability, get_vulnerability_stats, delete_vulnerability
 from services.report_service import generate_csv_for_user
 
@@ -123,3 +123,11 @@ def delete_vulnerability_route(app_id, vuln_id):
     delete_vulnerability(vuln)
     flash("Vulnerabilidade removida com sucesso.", "success")
     return redirect(url_for('protected.app_detail', id=app.id))
+
+@protected_bp.route('/app/<int:id>/delete', methods=['POST'])
+@login_required
+def delete_application_route(id):
+    app_model = Application.query.filter_by(id=id, user_id=current_user.id).first_or_404()
+    delete_application(app_model)
+    flash('Aplicação removida com sucesso.', 'success')
+    return redirect(url_for('protected.apps'))
