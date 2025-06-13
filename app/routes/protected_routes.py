@@ -1,9 +1,9 @@
-from flask import Blueprint, make_response, render_template, request, redirect, url_for
+from flask import Blueprint, make_response, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from models.application import Application
 from models.vulnerability import Vulnerability
 from services.application_service import create_application, update_application
-from services.vulnerability_service import create_vulnerability, update_vulnerability, get_vulnerability_stats
+from services.vulnerability_service import create_vulnerability, update_vulnerability, get_vulnerability_stats, delete_vulnerability
 from services.report_service import generate_csv_for_user
 
 protected_bp = Blueprint('protected', __name__)
@@ -113,3 +113,13 @@ def export_all_vulnerabilities():
     output.headers["Content-Disposition"] = "attachment; filename=relatorio_vulnerabilidades.csv"
     output.headers["Content-type"] = "text/csv"
     return output
+
+@protected_bp.route('/app/<int:app_id>/vuln/<int:vuln_id>/delete', methods=['POST'])
+@login_required
+def delete_vulnerability_route(app_id, vuln_id):
+    app = Application.query.filter_by(id=app_id, user_id=current_user.id).first_or_404()
+    vuln = Vulnerability.query.filter_by(id=vuln_id, application_id=app.id).first_or_404()
+
+    delete_vulnerability(vuln)
+    flash("Vulnerabilidade removida com sucesso.", "success")
+    return redirect(url_for('protected.app_detail', id=app.id))

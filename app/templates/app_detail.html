@@ -6,7 +6,7 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="mb-0">{{ app.name }}</h2>
-         <a href="{{ url_for('protected.edit_application', id=app.id) }}" class="btn btn-outline-light btn-sm">
+        <a href="{{ url_for('protected.edit_application', id=app.id) }}" class="btn btn-outline-light btn-sm">
             Editar Aplicação
         </a>
         <a href="{{ url_for('protected.register_vulnerability', app_id=app.id) }}" class="btn btn-light btn-sm">
@@ -26,18 +26,28 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <strong>{{ v.severity|capitalize }}</strong> – {{ v.description }}<br>
-                    <small class="text-muted">Status: {{ v.status }} | Descoberta em {{ v.date_discovered }}</small>
+                    <small class="text-muted">Status: {{ v.status }} | Descoberta em {{
+                        v.date_discovered.strftime('%d/%m/%Y') }}</small>
                 </div>
-                <a href="{{ url_for('protected.edit_vulnerability', app_id=app.id, vuln_id=v.id) }}"
-                    class="btn btn-outline-light btn-sm ms-3">Editar</a>
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('protected.edit_vulnerability', app_id=app.id, vuln_id=v.id) }}"
+                        class="btn btn-outline-light btn-sm">Editar</a>
+                    <form action="{{ url_for('protected.delete_vulnerability_route', app_id=app.id, vuln_id=v.id) }}"
+                        method="POST" class="m-0 p-0">
+                        <button type="submit" class="btn btn-outline-danger btn-sm"
+                            onclick="return confirm('Tem certeza que deseja excluir esta vulnerabilidade?')">
+                            Excluir
+                        </button>
+                    </form>
+                </div>
             </div>
-
         </li>
         {% endfor %}
     </ul>
     {% else %}
     <p class="text-muted">Nenhuma vulnerabilidade registrada para esta aplicação.</p>
     {% endif %}
+
 
     <div class="mt-4">
         <a href="{{ url_for('protected.apps') }}" class="btn btn-outline-light btn-sm">← Voltar para Aplicações</a>
